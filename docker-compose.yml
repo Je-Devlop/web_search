@@ -1,0 +1,52 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgresql
+    environment:
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=web_content
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
+    networks:
+      - search-network
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.7.1
+    container_name: elasticsearch
+    ports:
+      - 9200:9200
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - search-network
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.7.1
+    container_name: logstash
+    environment:
+      discovery.seed_hosts: logstash
+    volumes:
+      - ./logstash-config/postgresql-42.6.0.jar:/usr/share/logstash/postgresql-42.6.0.jar
+      - ./logstash-config/pipelines.yml:/usr/share/logstash/config/pipelines.yml
+      - ./logstash-config/web-search.conf:/usr/share/logstash/config/web-search.conf
+    depends_on:
+      - elasticsearch
+      - postgres
+    networks:
+      - search-network
+    links:
+      - elasticsearch
+      - postgres
+volumes:
+  elasticsearch_data:
+  postgres_data:
+networks:
+  search-network:
+
+

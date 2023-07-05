@@ -1,0 +1,3 @@
+- pipeline.id: web-search
+  path.config: "/usr/share/logstash/config/web-search.conf"
+  config.support_escapes: true
