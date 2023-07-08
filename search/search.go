@@ -11,14 +11,14 @@ type elasticStore interface {
 	GetContentByKeyword(searchIndex string, jsonQuery []byte) (*esapi.Response, error)
 }
 
-type SearchRequest struct {
-	KeyWord string `form:"keyword" binding:"required"`
-}
-
 type SearchResponse struct {
 	Url         string `json:"url"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
+}
+
+type SearchRequest struct {
+	KeyWord string `form:"keyword" binding:"required"`
 }
 
 func setQuery(req SearchRequest) ([]byte, error) {

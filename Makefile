@@ -1,5 +1,5 @@
 start_deps:
-	docker compose up -d
+	docker compose up
 
 stop_deps:
 	docker compose down

@@ -11,7 +11,6 @@ services:
       - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init:/docker-entrypoint-initdb.d
     networks:
       - search-network
   elasticsearch:
@@ -35,6 +34,7 @@ services:
       - ./logstash-config/postgresql-42.6.0.jar:/usr/share/logstash/postgresql-42.6.0.jar
       - ./logstash-config/pipelines.yml:/usr/share/logstash/config/pipelines.yml
       - ./logstash-config/web-search.conf:/usr/share/logstash/config/web-search.conf
+      - ./logstash-config/template.json:/usr/share/logstash/config/template.json
     depends_on:
       - elasticsearch
       - postgres

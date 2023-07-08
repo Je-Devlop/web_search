@@ -1,0 +1,33 @@
+{
+  "index_patterns": ["content-search*"],
+  "template": {
+    "settings": {
+      "index": {
+        "analysis": {
+          "analyzer": {
+            "thai_analyzer": {
+              "tokenizer": "thai",
+              "filter": ["lowercase"]
+            }
+          }
+        }
+      }
+    },
+    "mappings": {
+      "properties": {
+        "title": {
+          "type": "text",
+          "analyzer": "thai_analyzer"
+        },
+        "description": {
+          "type": "text",
+          "analyzer": "thai_analyzer"
+        },
+        "keyword": {
+          "type": "text",
+          "analyzer": "thai_analyzer"
+        }
+      }
+    }
+  }
+}
